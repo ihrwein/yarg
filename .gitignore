@@ -1,3 +1,5 @@
 build/*
 dist/*
 Yet_Another_RSync_GUI.*/*
+*.pyc
+.idea/*
