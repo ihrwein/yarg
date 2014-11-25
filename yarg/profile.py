@@ -2,9 +2,8 @@ class Profile:
 
     def __init__(self,
                 name,
-                credentials=None,
                 source=None,
-                target=None,
+                destination=None,
                 last_sync=None,
                 rsync_options=None):
         pass
