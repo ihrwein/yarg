@@ -1,5 +1,5 @@
 from yarg.credentials.credentials import Credentials
-from yarg.credentials.gnome_keyring import GnomeKeyring
+from yarg.credentials.keyring import Keyring
 from yarg.credentials.public_key import PublicKeyCredentials
 from yarg.credentials.username_password import UsernamePasswordCredentials
 

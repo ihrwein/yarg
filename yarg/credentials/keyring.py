@@ -1,5 +1,5 @@
 from yarg.credentials import Credentials
 
 
-class GnomeKeyring(Credentials):
+class Keyring(Credentials):
     pass
