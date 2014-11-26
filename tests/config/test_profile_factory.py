@@ -1,11 +1,13 @@
 import unittest
 
+from datetime import datetime
+
 from yarg.config import ProfileFactory
-from yarg.profile import Profile
+
 
 class TestProfileFactory(unittest.TestCase):
 
-    def test_create_Profile_instance_from_configuration(self):
+    def test_create_profile_instance_from_configuration(self):
         config = {
             'name': 'local',
             'source': {
@@ -14,7 +16,7 @@ class TestProfileFactory(unittest.TestCase):
             'destination': {
               'path': '/tmp/target/'
             },
-            'last_sync': '2014-11-17 12:12:56.000',
+            'last_sync': 1417030174.658952,
             'rsync_options': {
               'partial': True,
               'force': True,
@@ -27,3 +29,10 @@ class TestProfileFactory(unittest.TestCase):
         self.assertEqual('local', p.name)
         self.assertIsNotNone(p.source)
         self.assertIsNotNone(p.destination)
+        self.assertIsNotNone(p.rsync_options)
+        self.assertEqual('/tmp/source/', p.source.path)
+        self.assertEqual('/tmp/target/', p.destination.path)
+        self.assertEqual(True, p.rsync_options['partial'])
+        self.assertEqual('ssh', p.rsync_options['rsh'])
+        self.assertEqual('ssh', p.rsync_options['rsh'])
+        self.assertTrue(p.last_sync < datetime.now())
