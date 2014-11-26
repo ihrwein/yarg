@@ -1,13 +1,15 @@
 class Application:
 
     def __init__(self):
-        pass
+        self._profiles = []
 
-    def add_new_profile(self, name):
-        pass
+    def add_new_profile(self, profile):
+        if profile not in self._profiles:
+            self._profiles.append(profile)
 
-    def remove_profile(self, name):
-        pass
+    def remove_profile(self, profile):
+        if profile in self._profiles:
+            self._profiles.remove(profile)
 
     def sync_profile(self, name, sync_observer):
         pass
@@ -16,4 +18,4 @@ class Application:
         pass
 
     def get_profiles(self):
-        pass
+        return self._profiles

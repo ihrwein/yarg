@@ -6,4 +6,8 @@ class Profile:
                 destination=None,
                 last_sync=None,
                 rsync_options=None):
-        pass
+        self.name = name
+        self.source = source
+        self.destination = destination
+        self.last_sync = last_sync
+        self.rsync_options = rsync_options

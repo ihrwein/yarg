@@ -2,4 +2,7 @@ from yarg.credentials import Credentials
 
 
 class PublicKeyCredentials(Credentials):
-    pass
+
+    @staticmethod
+    def create_from_config(config):
+        return PublicKeyCredentials()
