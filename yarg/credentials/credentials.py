@@ -1,6 +1,6 @@
 class Credentials:
 
-    def __init__(self, name, params=None):
+    def __init__(self, name, config=None):
         self.name = name
-        self.params = params
+        self.config = config
 

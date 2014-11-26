@@ -16,9 +16,8 @@ A simple config file:
 credentials:
   - name: username
     type: username_password
-    params:
-      username: test
-      password: secret
+    username: test
+    password: secret
 
 profiles:
    - name: local

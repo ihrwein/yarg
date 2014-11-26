@@ -17,6 +17,7 @@ class CredentialsFactory:
     @staticmethod
     def create_from_config(config):
         type = config['type']
+
         factory_method = _FACTORY_METHODS.get(type)
         return factory_method(config)
 

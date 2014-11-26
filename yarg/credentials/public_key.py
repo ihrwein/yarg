@@ -5,4 +5,5 @@ class PublicKeyCredentials(Credentials):
 
     @staticmethod
     def create_from_config(config):
-        return PublicKeyCredentials()
+        name = config['name']
+        return PublicKeyCredentials(name, config)
