@@ -1,7 +1,11 @@
+from yarg.config import ConfigLoader
+
+
 class Application:
 
-    def __init__(self):
-        self._profiles = []
+    def __init__(self, config_path=None):
+        self._config_loader = ConfigLoader(config_path)
+        self._profiles = self._config_loader.get_profiles()
 
     def add_new_profile(self, profile):
         if profile not in self._profiles:
