@@ -1,4 +1,5 @@
 from yarg.config import ConfigLoader
+from yarg.rsync import SyncManager
 
 
 class Application:
@@ -7,6 +8,7 @@ class Application:
         self._config_loader = ConfigLoader(config_path)
         self._profiles = self._config_loader.get_profiles()
         self._credentials = self._config_loader.get_credentials()
+        self._sync_manager = SyncManager()
 
     def add_new_profile(self, profile):
         if profile not in self._profiles:
@@ -17,7 +19,8 @@ class Application:
             self._profiles.remove(profile)
 
     def sync_profile(self, name, sync_observer):
-        pass
+        profile = self._profiles[name]
+        return self._sync_manager.sync_profile(profile, sync_observer)
 
     def save_configuration(self, ):
         pass

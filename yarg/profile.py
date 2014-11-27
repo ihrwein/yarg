@@ -6,6 +6,9 @@ class Profile:
                 destination=None,
                 last_sync=None,
                 rsync_options=None):
+        if rsync_options is None:
+            rsync_options = {}
+
         self.name = name
         self.source = source
         self.destination = destination
