@@ -41,6 +41,116 @@ ColumnLayout {
         Layout.fillHeight: true
         Tab {
             title:'Basic options'
+            /*
+            Column {
+                spacing: 0
+                Rectangle {
+                    width: 50
+                    height: 50
+                }
+                Rectangle {
+                    width: 50
+                    height: 50
+                }
+            }
+            */
+            Column {
+                anchors.fill: parent
+                RowLayout {
+                    width: parent.width
+                    height: 40
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: parent.width / 3
+                        text: 'Name'
+                    }
+                    TextField {
+                        id:name_value
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.fillWidth: true
+                        text: mainController.selected_profile.name
+                    }
+                    Binding {
+                        target: mainController.selected_profile
+                        property: 'name'
+                        value: name_value.text
+                    }
+                }
+                RowLayout {
+                    width: parent.width
+                    height: 40
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: parent.width / 3
+                        text: 'Source'
+                    }
+                    TextField {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.fillWidth: true
+                        text: mainController.selected_profile.source
+                    }
+                }
+                RowLayout {
+                    width: parent.width
+                    height: 40
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: parent.width / 3
+                        text: 'Destination'
+                    }
+                    TextField {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.fillWidth: true
+                        text: mainController.selected_profile.destination
+                    }
+                }
+                RowLayout {
+                    width: parent.width
+                    height: 40
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: parent.width / 3
+                        text: 'Last synced'
+                    }
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.fillWidth: true
+                        text: mainController.selected_profile.last_sync
+                    }
+                }
+            }
         }
         Tab {
             title:'Rsync parameters'
