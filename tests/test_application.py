@@ -1,6 +1,7 @@
 import unittest
 import os
 
+import yarg.application
 from unittest import mock
 from yarg import Application
 from yarg.syncobserver import SyncObserver
@@ -12,13 +13,13 @@ class TestApplication(unittest.TestCase):
     def setUp(self):
         current_dir = os.path.abspath(os.getcwd())
         full_config_path = os.path.join(current_dir, 'yarg.conf')
-        self.app = Application(full_config_path)
+        self.app = yarg.application.instance(full_config_path)
 
     def test_load_profiles(self):
         self.assertEqual(len(self.app.get_profiles()), 2)
 
     def test_load_credentials(self):
-        self.assertEqual(len(self.app.get_credentials()), 1)
+        self.assertEqual(len(self.app.get_credentials()), 2)
 
     def test_sync_profile(self):
         so = SyncObserver()

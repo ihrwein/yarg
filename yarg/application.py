@@ -30,3 +30,11 @@ class Application:
 
     def get_credentials(self):
         return self._credentials
+
+
+_INSTANCE = None
+def instance(path=None):
+    global _INSTANCE
+    if not _INSTANCE:
+        _INSTANCE = Application(path)
+    return _INSTANCE

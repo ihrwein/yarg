@@ -1,4 +1,5 @@
 import subprocess
+import yarg.application
 from subprocess import Popen
 
 from yarg.profile import Profile
@@ -16,6 +17,34 @@ class RSyncClient:
 
     def _create_cli_options_from_profile(self):
         rsync_options = []
+        credentials = yarg.application.instance().get_credentials()
+
+        suser = duser = None
+        scred = credentials.get(self.profile.source.credentials, None)
+        dcred = credentials.get(self.profile.destination.credentials, None)
+
+        identity_file = None
+        port = None
+
+        if scred and scred.config.get('type', None) == 'public_key':
+            identity_file = scred.identity_file
+
+        if dcred and dcred.config.get('type', None) == 'public_key':
+            identity_file = dcred.identity_file
+
+        if self.profile.source.port:
+            port = self.profile.source.port
+
+        if self.profile.destination.port:
+            port = self.profile.destination.port
+
+        if 'rsh' in self.profile.rsync_options and self.profile.rsync_options['rsh'] == 'ssh':
+            if identity_file:
+                self.profile.rsync_options['rsh'] = '/usr/bin/ssh -i {0}'.format(identity_file)
+
+            if port:
+                self.profile.rsync_options['rsh'] += ' -p {0}'.format(port)
+
         for key, value in self.profile.rsync_options.items():
 
             if value is True:
@@ -23,12 +52,11 @@ class RSyncClient:
             elif value not in (None, False):
                 rsync_options.append("--{0}={1}".format(key, value))
 
-        suser = duser = None
-        if self.profile.source.credentials and self.profile.source.credentials.user:
-            suser = self.profile.source.credentials.user
+        if scred:
+            suser = scred.user
 
-        if self.profile.destination.credentials and self.profile.destination.credentials.user:
-            duser = self.profile.source.destination.user
+        if dcred:
+            duser = dcred.user
 
         src = RSyncClient._format_endpoint(suser, self.profile.source.host,
                                            self.profile.source.path)
@@ -52,7 +80,8 @@ class RSyncClient:
         command = []
         command.extend(self._command)
         command.extend(self._options)
-        print('RSync CLI options:', ' '.join(command))
+        joined = ' '.join(command)
+        print('RSync CLI options:', joined)
         popen = subprocess.call(command, stderr=subprocess.STDOUT)
         return popen
 

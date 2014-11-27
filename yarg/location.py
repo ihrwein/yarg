@@ -9,10 +9,3 @@ class Location:
         self.port = port
         self.path = path
         self.credentials = credentials
-
-    def get_source(self):
-        user = self.credentials
-        pass
-
-    def get_destination(self):
-        pass

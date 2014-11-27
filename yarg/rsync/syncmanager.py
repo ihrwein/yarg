@@ -9,6 +9,7 @@ class SyncManager:
 
     def sync_profile(self, profile, sync_observer):
         name = profile.name
+        print('Syncing profile:', name)
         if name not in self._active_syncs.keys():
             client = RSyncClient(profile)
 
