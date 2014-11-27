@@ -38,7 +38,7 @@ profiles:
        path: /tmp/target/
        host: backup.example.org
        port: 10022
-       credential: username
+       credentials: username
      last_sync: '2014-11-17 12:12:56.000'
      rsync_options:
        partial: true

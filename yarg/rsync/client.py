@@ -23,9 +23,16 @@ class RSyncClient:
             elif value not in (None, False):
                 rsync_options.append("--{0}={1}".format(key, value))
 
-        src = RSyncClient._format_endpoint(None, self.profile.source.host,
+        suser = duser = None
+        if self.profile.source.credentials and self.profile.source.credentials.user:
+            suser = self.profile.source.credentials.user
+
+        if self.profile.destination.credentials and self.profile.destination.credentials.user:
+            duser = self.profile.source.destination.user
+
+        src = RSyncClient._format_endpoint(suser, self.profile.source.host,
                                            self.profile.source.path)
-        dest = RSyncClient._format_endpoint(None, self.profile.destination.host,
+        dest = RSyncClient._format_endpoint(duser, self.profile.destination.host,
                                             self.profile.destination.path)
 
         rsync_options.extend([src, dest])

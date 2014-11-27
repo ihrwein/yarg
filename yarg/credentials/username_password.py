@@ -1,9 +1,10 @@
-from yarg.credentials import Credentials
+from yarg.credentials import RemoteCredentials
 
 
-class UsernamePasswordCredentials(Credentials):
+class UsernamePasswordCredentials(RemoteCredentials):
 
     @staticmethod
     def create_from_config(config):
         name = config['name']
-        return UsernamePasswordCredentials(name, config)
+        user = config['username']
+        return UsernamePasswordCredentials(name, user, config)

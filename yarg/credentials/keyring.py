@@ -1,9 +1,10 @@
-from yarg.credentials import Credentials
+from yarg.credentials import RemoteCredentials
 
 
-class Keyring(Credentials):
+class Keyring(RemoteCredentials):
 
     @staticmethod
     def create_from_config(config):
         name = config['name']
-        return Keyring(name, config)
+        user = config['username']
+        return Keyring(name, user, config)
