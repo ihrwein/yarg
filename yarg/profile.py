@@ -13,4 +13,6 @@ class Profile:
         self.source = source
         self.destination = destination
         self.last_sync = last_sync
+        if rsync_options is None:
+            rsync_options = {}
         self.rsync_options = rsync_options
