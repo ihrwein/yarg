@@ -77,8 +77,6 @@ class ProfileViewModel(QObject):
     def save_changes(self):
         for option in self._rsync_options:
             self.model.rsync_options[option.key] = option.value
-        print('saving changes')
-        print(self._name)
         self.model.name = self.name
         self.model.source = self.source
         self.model.destination = self.destination
