@@ -3,9 +3,7 @@ class Location:
     def __init__(self,
                  path,
                  host=None,
-                 port=None,
-                 credentials=None):
+                 is_remote=False):
         self.host = host
-        self.port = port
         self.path = path
-        self.credentials = credentials
+        self.is_remote = is_remote

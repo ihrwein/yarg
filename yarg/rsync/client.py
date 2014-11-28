@@ -1,10 +1,4 @@
 import subprocess
-import yarg.application
-from subprocess import Popen
-
-from yarg.profile import Profile
-from yarg.synchandler import SyncHandler
-from yarg.syncobserver import SyncObserver
 
 
 class RSyncClient:
@@ -17,33 +11,14 @@ class RSyncClient:
 
     def _create_cli_options_from_profile(self):
         rsync_options = []
-        credentials = yarg.application.instance().get_credentials()
 
-        suser = duser = None
-        scred = credentials.get(self.profile.source.credentials, None)
-        dcred = credentials.get(self.profile.destination.credentials, None)
+        if 'rsh' in self.profile.rsync_options and self.profile.rsync_options['rsh'].startswith('ssh'):
+            sshcommand = self.profile.rsync_options['rsh']
+            port = self.profile.sshoptions.port
+            identity_file = self.profile.sshoptions.identity_file
 
-        identity_file = None
-        port = None
-
-        if scred and scred.config.get('type', None) == 'public_key':
-            identity_file = scred.identity_file
-
-        if dcred and dcred.config.get('type', None) == 'public_key':
-            identity_file = dcred.identity_file
-
-        if self.profile.source.port:
-            port = self.profile.source.port
-
-        if self.profile.destination.port:
-            port = self.profile.destination.port
-
-        if 'rsh' in self.profile.rsync_options and self.profile.rsync_options['rsh'] == 'ssh':
-            if identity_file:
-                self.profile.rsync_options['rsh'] = '/usr/bin/ssh -i {0}'.format(identity_file)
-
-            if port:
-                self.profile.rsync_options['rsh'] += ' -p {0}'.format(port)
+            sshcommand = '{0} -i {1} -p {2}'.format(sshcommand, identity_file, port)
+            self.profile.rsync_options['rsh'] = sshcommand
 
         for key, value in self.profile.rsync_options.items():
 
@@ -52,18 +27,20 @@ class RSyncClient:
             elif value not in (None, False):
                 rsync_options.append("--{0}={1}".format(key, value))
 
-        if scred:
-            suser = scred.user
+        suser = self.profile.sshoptions.user if self.profile.source.is_remote else None
+        duser = self.profile.sshoptions.user if self.profile.destination.is_remote else None
 
-        if dcred:
-            duser = dcred.user
+        if len(self.profile.source.path) > 1:
+            rsync_options.extend(self.profile.source.path)
+        else:
+            src = RSyncClient._format_endpoint(suser, self.profile.source.host,
+                                               self.profile.source.path[0])
+            rsync_options.append(src)
 
-        src = RSyncClient._format_endpoint(suser, self.profile.source.host,
-                                           self.profile.source.path)
         dest = RSyncClient._format_endpoint(duser, self.profile.destination.host,
-                                            self.profile.destination.path)
+                                            self.profile.destination.path[0])
 
-        rsync_options.extend([src, dest])
+        rsync_options.append(dest)
         return rsync_options
 
     @staticmethod
