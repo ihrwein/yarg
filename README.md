@@ -22,27 +22,34 @@ credentials:
 profiles:
    - name: local
      source:
-       path: /tmp/source/
+       path:
+       - /tmp/source/
      destination:
-       path: /tmp/target/
-     last_sync: '2014-11-17 12:12:56.000'
+       path:
+       - /tmp/target/
+     last_sync: 1417030174.658952
      rsync_options:
        partial: true
        force: true
        chmod: "600"
-       rsh: ssh
    - name: Backup server 1
      source:
-       path: /tmp/source/
+       path:
+       - /tmp/source/
      destination:
-       path: /tmp/target/
-       host: backup.example.org
-       port: 10022
-       credentials: username
-     last_sync: '2014-11-17 12:12:56.000'
+       path:
+       - /tmp/target/
+       host: jimmy.sch.bme.hu
+       remote: true
+     credentials: public_key
+     last_sync: 1417030174.658952
      rsync_options:
        partial: true
        force: true
        chmod: "600"
        rsh: ssh
+     ssh_remote: destination
+     ssh:
+       port: 10022
+       identity_file: ~/.ssh/id_rsa
 ```
