@@ -8,10 +8,17 @@ ApplicationWindow {
     width: 400
     height: 480
     title: qsTr("YARG")
-    FlipBar {
+
+    property alias editPanel: editPanel
+    StackView {
         anchors.fill: parent
-        id: flipBar
-        front : ProfileList {}
-        back : EditPanel {}
+        id: stackView
+        initialItem: profileList
+    }
+    Item {
+        visible: false
+        id: mainComponent
+        ProfileList {id: profileList}
+        EditPanel {id: editPanel}
     }
 }

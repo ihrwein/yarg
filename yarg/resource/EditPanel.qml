@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 
 ColumnLayout {
-    anchors.fill: parent
+    width: parent.width
     RowLayout {
         spacing: 0
         width: parent.width
@@ -15,7 +15,7 @@ ColumnLayout {
             text: "Save & Close"
             onClicked: {
                 mainController.edit_panel_save_clicked()
-                flipBar.flipDown();
+                stackView.pop();
             }
         }
         Button {
@@ -24,7 +24,7 @@ ColumnLayout {
             text: "Close"
             onClicked: {
                 mainController.edit_panel_close_clicked()
-                flipBar.flipDown();
+                stackView.pop();
             }
         }
     }

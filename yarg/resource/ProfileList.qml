@@ -4,7 +4,6 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 
 ColumnLayout {
-    anchors.fill: parent
     ToolBar {
         id: toolBar
         Layout.fillWidth: true
@@ -75,7 +74,8 @@ ColumnLayout {
                         text: "Edit"
                         onClicked: {
                             updateSelection()
-                            flipBar.flipUp()
+                            //flipBar.flipUp()
+                            stackView.push(editPanel)
                         }
                     }
                     Button {
