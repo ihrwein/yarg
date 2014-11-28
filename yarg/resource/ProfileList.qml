@@ -10,7 +10,10 @@ ColumnLayout {
         RowLayout {
             ToolButton {
                 text: "Add new profile"
-                onClicked: mainController.add_new_profile_clicked()
+                onClicked: {
+                    mainController.add_new_profile_clicked()
+                    stackView.push(addProfilePanel)
+                }
             }
         }
     }

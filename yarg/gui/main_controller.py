@@ -11,6 +11,7 @@ class MainController(QObject):
     def __init__(self, parent=None):
         super(MainController, self).__init__(parent)
         self._selected_profile = ProfileViewModel(Profile('dummy profile', {}))
+        self._new_profile = None
         #self._application = yarg.application.instance('./yarg_gui.conf')
         self.profiles = [Profile('Profile1', source='Src', destination='Dst', last_sync=datetime.now(),
                                  rsync_options={'float_option': 42.42, 'bool_option': True,
@@ -33,6 +34,12 @@ class MainController(QObject):
     def selected_profile(self):
         return self._selected_profile
 
+    new_profile_changed = pyqtSignal()
+
+    @pyqtProperty(ProfileViewModel, notify=new_profile_changed)
+    def new_profile(self):
+        return self._new_profile
+
     @pyqtSlot(int)
     def profile_selection_changed(self, index):
         self._selected_profile = self._profile_model[index]
@@ -41,7 +48,19 @@ class MainController(QObject):
 
     @pyqtSlot()
     def add_new_profile_clicked(self):
-        self._profile_model.append(ProfileViewModel(Profile('Profile xx')))
+        self._new_profile = ProfileViewModel(model=Profile(name=''))
+        self.new_profile_changed.emit()
+
+    @pyqtSlot()
+    def save_new_profile_clicked(self):
+        self._profile_model.append(self.new_profile)
+        self._new_profile = None
+        self.new_profile_changed.emit()
+
+    @pyqtSlot()
+    def discard_new_profile_clicked(self):
+        self._new_profile = None
+        self.new_profile_changed.emit()
 
     @pyqtSlot()
     def delete_profile_clicked(self):

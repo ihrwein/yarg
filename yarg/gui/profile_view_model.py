@@ -58,7 +58,10 @@ class ProfileViewModel(QObject):
 
     @pyqtProperty(str, notify=last_sync_changed)
     def last_sync(self):
-        return self._last_sync.__format__('%Y-%m-%d %H:%M')
+        if self._last_sync is not None:
+            return self._last_sync.__format__('%Y-%m-%d %H:%M')
+        else:
+            return ''
 
     @last_sync.setter
     def last_sync(self, v):
