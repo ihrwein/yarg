@@ -43,6 +43,14 @@ class MainController(QObject):
         self.selected_profile_changed.emit()
 
     @pyqtSlot()
+    def add_source_path_clicked(self):
+        self.selected_profile.source_paths.append('')
+
+    @pyqtSlot(int)
+    def remove_source_path_clicked(self, index):
+        self.selected_profile.source_paths.removeAt(index)
+
+    @pyqtSlot()
     def add_new_profile_clicked(self):
         self._new_profile = ProfileViewModel(model=Profile(name=''))
         self.new_profile_changed.emit()

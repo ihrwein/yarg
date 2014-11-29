@@ -12,7 +12,6 @@ class ProfileViewModel(QObject):
         self.model = model
         self._name = model.name
         self._source_paths = QObjectListModel()
-        self._source_paths.append('/home/tegi/dir')
         self._destination = model.destination
         self._last_sync = model.last_sync
         self._rsync_options = QObjectListModel()
