@@ -14,7 +14,7 @@ class SyncManager:
             client = RSyncClient(profile)
 
             popen = client.start_sync()
-            sp = SyncProxy(name=name,
+            sp = SyncProxy(profile=profile,
                            handler_popen=popen,
                            observer=sync_observer,
                            manager=self)
