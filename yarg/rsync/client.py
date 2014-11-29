@@ -30,17 +30,20 @@ class RSyncClient:
         suser = self.profile.sshoptions.user if self.profile.source.is_remote else None
         duser = self.profile.sshoptions.user if self.profile.destination.is_remote else None
 
-        if len(self.profile.source.path) > 1:
+        if not self.profile.source.is_remote:
             rsync_options.extend(self.profile.source.path)
-        else:
-            src = RSyncClient._format_endpoint(suser, self.profile.source.host,
+        elif len(self.profile.source.path) == 1 and self.profile.source.is_remote:
+            src = RSyncClient._format_endpoint(suser, self.profile.sshoptions.host,
                                                self.profile.source.path[0])
             rsync_options.append(src)
+        else:
+            raise ValueError('If a source location is a remote, it can contain only one path')
 
-        dest = RSyncClient._format_endpoint(duser, self.profile.destination.host,
-                                            self.profile.destination.path[0])
+        if self.profile.destination.is_remote:
+            dest = RSyncClient._format_endpoint(duser, self.profile.sshoptions.host,
+                                               self.profile.destination.path[0])
+            rsync_options.append(dest)
 
-        rsync_options.append(dest)
         return rsync_options
 
     @staticmethod

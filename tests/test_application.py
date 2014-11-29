@@ -19,7 +19,7 @@ class TestApplication(unittest.TestCase):
         self.assertEqual(len(self.app.get_profiles()), 2)
 
     def test_load_credentials(self):
-        self.assertEqual(len(self.app.get_credentials()), 2)
+        self.assertEqual(len(self.app.get_credentials()), 1)
 
     def test_sync_profile(self):
         so = SyncObserver()
