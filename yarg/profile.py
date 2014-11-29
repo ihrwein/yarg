@@ -1,4 +1,6 @@
 from datetime import timezone
+from yarg.location import Location
+
 
 
 class Profile:
@@ -12,13 +14,14 @@ class Profile:
                  sshoptions=None):
         if rsync_options is None:
             rsync_options = {}
-
         self.name = name
-
+        if source is None:
+            source = Location()
+        self.source = source
+        if destination is None:
+            destination = Location()
         if source.is_remote and destination.is_remote:
             raise ValueError('Source and destination cannot be both remotes at the same time')
-
-        self.source = source
         self.destination = destination
         self.last_sync = last_sync
         if rsync_options is None:

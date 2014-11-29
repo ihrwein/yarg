@@ -1,7 +1,7 @@
 class Location:
 
     def __init__(self,
-                 path,
+                 path=None,
                  is_remote=False):
         self.path = path
         self.is_remote = is_remote
