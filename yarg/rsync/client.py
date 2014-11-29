@@ -1,68 +1,19 @@
 import subprocess
 
+from yarg.rsync import CLIOptions
+
 
 class RSyncClient:
 
     def __init__(self, profile):
         self.profile = profile
-
-        self._command = ['rsync', ]
-        self._options = self._create_cli_options_from_profile()
-
-    def _create_cli_options_from_profile(self):
-        rsync_options = []
-
-        if 'rsh' in self.profile.rsync_options and self.profile.rsync_options['rsh'].startswith('ssh'):
-            sshcommand = self.profile.rsync_options['rsh']
-            port = self.profile.sshoptions.port
-            identity_file = self.profile.sshoptions.identity_file
-
-            sshcommand = '{0} -i {1} -p {2}'.format(sshcommand, identity_file, port)
-            self.profile.rsync_options['rsh'] = sshcommand
-
-        for key, value in self.profile.rsync_options.items():
-
-            if value is True:
-                rsync_options.append("--{0}".format(key))
-            elif value not in (None, False):
-                rsync_options.append("--{0}={1}".format(key, value))
-
-        suser = self.profile.sshoptions.user if self.profile.source.is_remote else None
-        duser = self.profile.sshoptions.user if self.profile.destination.is_remote else None
-
-        if not self.profile.source.is_remote:
-            rsync_options.extend(self.profile.source.path)
-        elif len(self.profile.source.path) == 1 and self.profile.source.is_remote:
-            src = RSyncClient._format_endpoint(suser, self.profile.sshoptions.host,
-                                               self.profile.source.path[0])
-            rsync_options.append(src)
-        else:
-            raise ValueError('If a source location is a remote, it can contain only one path')
-
-        if self.profile.destination.is_remote:
-            dest = RSyncClient._format_endpoint(duser, self.profile.sshoptions.host,
-                                               self.profile.destination.path[0])
-            rsync_options.append(dest)
-
-        return rsync_options
-
-    @staticmethod
-    def _format_endpoint(user, host, path):
-        src = ''
-
-        if host:
-            if user:
-                src = "{0}@"
-            src += host + ':'
-        return src + path
+        cli = CLIOptions(profile)
+        self._command = cli.get_command_and_options()
 
     def start_sync(self):
-        command = []
-        command.extend(self._command)
-        command.extend(self._options)
-        joined = ' '.join(command)
+        joined = ' '.join(self._command)
         print('RSync CLI options:', joined)
-        popen = subprocess.call(command, stderr=subprocess.STDOUT)
+        popen = subprocess.call(self._command, stderr=subprocess.STDOUT)
         return popen
 
     def _abort_sync(self):
