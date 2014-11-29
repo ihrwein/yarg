@@ -5,16 +5,24 @@ class ConfigSaver:
     def __init__(self,
                  path,
                  profiles,
-                 credentials):
+                 credentials,
+                 default_rsync_options):
         self._path = path
         self._profiles = profiles
         self._credentials = credentials
+        self._default_rsync_options = default_rsync_options
 
     def save(self):
         credentials = self._dump_credentials()
         profiles = self._dump_profiles()
-        root = {'credentials': credentials, 'profiles': profiles}
+        default_rsync_options = self._dump_default_rsync_options()
+        root = {'credentials': credentials,
+                'default_rsync_options': default_rsync_options,
+                'profiles': profiles}
         print(yaml.dump(root, default_flow_style=False))
+
+    def _dump_default_rsync_options(self):
+        return self._default_rsync_options
 
     def _dump_credentials(self):
         credentials = []

@@ -9,6 +9,7 @@ class Application:
         self._config_loader = ConfigLoader(config_path)
         self._profiles = self._config_loader.get_profiles()
         self._credentials = self._config_loader.get_credentials()
+        self._default_rsync_options = self._config_loader.get_default_rsync_options()
         self._sync_manager = SyncManager()
 
     def add_new_profile(self, profile):
@@ -26,7 +27,8 @@ class Application:
     def save_configuration(self):
         saver = ConfigSaver(self._config_loader.get_path(),
                             self._profiles,
-                            self._credentials)
+                            self._credentials,
+                            self._default_rsync_options)
         saver.save()
 
     def get_profiles(self):
@@ -34,6 +36,9 @@ class Application:
 
     def get_credentials(self):
         return self._credentials
+
+    def get_default_rsync_options(self):
+        return self._default_rsync_options
 
 
 _INSTANCE = None

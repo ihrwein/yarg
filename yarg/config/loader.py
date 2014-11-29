@@ -14,7 +14,11 @@ class ConfigLoader:
         self._config = self._load_first_available_config(paths)
         self._profiles = self._parse_profiles()
         self._credentials = self._parse_credentials()
+        self._default_rsync_options = self._parse_default_rsync_options()
         self._path = ''
+
+    def _parse_default_rsync_options(self):
+        return self._config.get('default_rsync_options', {})
 
     def _parse_config(self, key, factory_method):
         items = {}
@@ -72,3 +76,6 @@ class ConfigLoader:
 
     def get_path(self):
         return self._path
+
+    def get_default_rsync_options(self):
+        return self._default_rsync_options
