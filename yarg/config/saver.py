@@ -1,7 +1,5 @@
 import yaml
 
-from datetime import timezone
-
 
 class ConfigSaver:
     def __init__(self,
@@ -30,39 +28,9 @@ class ConfigSaver:
                 credentials.append(c)
         return credentials
 
-    def _dump_location(self, location):
-        l = {}
-
-        if location.path:
-            l['path'] = location.path
-
-        if location.is_remote is not None:
-            l['remote'] = location.is_remote
-
-        return l
-
     def _dump_profiles(self):
         profiles = []
         for k, v in self._profiles.items():
-            p = {'name': v.name,
-                 'source': self._dump_location(v.source),
-                 'destination': self._dump_location(v.destination),
-                 'last_sync': v.last_sync.replace(tzinfo=timezone.utc).timestamp(),
-                 'rsync_options': v.rsync_options}
-
-            if v.credentials:
-                p['credentials'] = v.credentials
-
-            if v.sshoptions:
-                o = {'port': v.sshoptions.port,
-                     'identity_file': v.sshoptions.identity_file}
-
-                if v.sshoptions.user:
-                    o['user'] = v.sshoptions.user
-
-                if v.sshoptions.host is not None:
-                    o['host'] = v.sshoptions.host
-
-                p['ssh'] = o
-            profiles.append(p)
+            config = v.dump_as_config()
+            profiles.append(config)
         return profiles
