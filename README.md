@@ -29,6 +29,12 @@ credentials:
     username: test
     password: secret
 
+default_rsync_options:
+  verbose: false
+  info: FLAGS
+  debug: FLAGS
+  msgs2stderr: false
+
 profiles:
    - name: local
      source:
