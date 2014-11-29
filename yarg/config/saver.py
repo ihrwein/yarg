@@ -19,7 +19,8 @@ class ConfigSaver:
         root = {'credentials': credentials,
                 'default_rsync_options': default_rsync_options,
                 'profiles': profiles}
-        print(yaml.dump(root, default_flow_style=False))
+        with open(self._path, 'wt') as f:
+            yaml.dump(root, f, default_flow_style=False)
 
     def _dump_default_rsync_options(self):
         return self._default_rsync_options
@@ -32,6 +33,9 @@ class ConfigSaver:
             if v:
                 if v.name:
                     c['name'] = v.name
+
+                if v.config.get('type', None):
+                    c['type'] = v.config.get('type')
 
                 credentials.append(c)
         return credentials

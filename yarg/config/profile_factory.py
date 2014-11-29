@@ -12,7 +12,12 @@ class ProfileFactory:
         source = LocationFactory.create_from_config(config['source'])
         destination = LocationFactory.create_from_config(config['destination'])
         rsync_options = config.get('rsync_options', {})
-        last_sync = datetime.datetime.fromtimestamp(config.get('last_sync'), None)
+
+        if 'last_sync' not in config:
+            last_sync = None
+        else:
+            last_sync = datetime.datetime.fromtimestamp(config.get('last_sync'))
+
         sshoptions = SSHOptions.create_from_config(config.get('ssh', {}))
         credentials = config.get('credentials', None)
         return Profile(name, source=source, destination=destination,

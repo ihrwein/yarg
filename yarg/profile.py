@@ -33,8 +33,9 @@ class Profile:
 
     def dump_as_config(self):
         config = {'name': self.name,
-                  'last_sync': self.last_sync.replace(tzinfo=timezone.utc).timestamp(),
                   'rsync_options': self.rsync_options}
+        if self.last_sync:
+            config['last_sync'] = self.last_sync.replace(tzinfo=timezone.utc).timestamp()
 
         if self.source:
             config['source'] = self.source.dump_as_config()

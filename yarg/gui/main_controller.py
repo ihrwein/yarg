@@ -16,7 +16,7 @@ class MainController(QObject):
         self._new_profile = None
         self._application = yarg.application.instance('yarg.conf')
         self._profile_model = QObjectListModel()
-        profile_list = self._application.get_profiles().items()
+        profile_list = sorted(self._application.get_profiles().items(), key=lambda prof: str.lower(prof[1].name))
         self._profile_model.append(list(map(lambda prof: ProfileViewModel(prof[1]), profile_list)))
         self._selected_profile_index = 0
         self._synchronizations_in_progress = {}
@@ -55,27 +55,24 @@ class MainController(QObject):
 
     @pyqtSlot()
     def add_new_profile_clicked(self):
-        self._new_profile = ProfileViewModel(model=Profile(name=''))
-        self.new_profile_changed.emit()
-
-    @pyqtSlot()
-    def save_new_profile_clicked(self):
-        self._profile_model.append(self.new_profile)
-        self._new_profile = None
-        self.new_profile_changed.emit()
-
-    @pyqtSlot()
-    def discard_new_profile_clicked(self):
-        self._new_profile = None
-        self.new_profile_changed.emit()
+        num = 1
+        while self._application.get_profiles().get('New profile ' + str(num), None) is not None:
+            num += 1
+        profile = Profile('New profile ' + str(num), source=Location(path=['']), destination=Location(path=['']))
+        self._application.add_new_profile(profile)
+        self.profile_model.append(ProfileViewModel(model=profile))
+        self._application.save_configuration()
 
     @pyqtSlot()
     def delete_profile_clicked(self):
+        self._application.remove_profile(self._selected_profile.name)
         self._profile_model.removeAt(self._selected_profile_index)
+        self._application.save_configuration()
 
     @pyqtSlot()
     def edit_panel_save_clicked(self):
         self._selected_profile.save_changes()
+        self._application.save_configuration()
 
     @pyqtSlot()
     def edit_panel_close_clicked(self):
@@ -94,7 +91,10 @@ class MainController(QObject):
     def sync_completed(self, profile_view_model):
         print('{0} : sync completed'.format(profile_view_model.name))
         self._synchronizations_in_progress.pop(profile_view_model.name, None)
-        self.selected_profile.sync_in_progress = False
+        profile_view_model.sync_in_progress = False
+        profile_view_model.last_sync = profile_view_model.model.last_sync
+        profile_view_model.out_of_sync_changed.emit()
+        self._application.save_configuration()
 
     def sync_failed(self, profile_view_model):
         print('{0} : sync failed'.format(profile_view_model.name))

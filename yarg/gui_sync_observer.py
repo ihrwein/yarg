@@ -10,7 +10,7 @@ class GuiSyncObserver(SyncObserver):
         self._gui_controller.sync_completed(self.profile_view_model)
 
     def failed(self, error_code):
-        self._gui_controller.sync_failed(self._profile_view_model)
+        self._gui_controller.sync_failed(self.profile_view_model)
 
     def status_update(self, message):
         pass

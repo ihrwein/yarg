@@ -14,11 +14,10 @@ class Application:
 
     def add_new_profile(self, profile):
         if profile not in self._profiles:
-            self._profiles.append(profile)
+            self._profiles[profile.name] = profile
 
-    def remove_profile(self, profile):
-        if profile in self._profiles:
-            self._profiles.remove(profile)
+    def remove_profile(self, name):
+        self._profiles.pop(name)
 
     def sync_profile(self, name, sync_observer):
         profile = self._profiles[name]

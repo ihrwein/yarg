@@ -4,16 +4,14 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.0
 
 ColumnLayout {
-    ToolBar {
-        id: toolBar
+    RowLayout {
+        spacing: 0
         Layout.fillWidth: true
-        RowLayout {
-            ToolButton {
-                text: "Add new profile"
-                onClicked: {
-                    mainController.add_new_profile_clicked()
-                    stackView.push(addProfilePanel)
-                }
+        Button {
+            Layout.fillWidth: true
+            text: "Add new profile"
+            onClicked: {
+                mainController.add_new_profile_clicked()
             }
         }
     }
@@ -32,6 +30,8 @@ ColumnLayout {
         }
         delegate: Rectangle {
             id: wrapperRect
+            border.color: object.out_of_sync ? 'red' : 'black'
+            color: ListView.isCurrentItem ? 'lightGray' : 'white'
             ListView.onAdd: SequentialAnimation {
                 NumberAnimation { target: wrapperRect; property: "scale"; from: 0; to: 1; duration: 250; easing.type: Easing.InOutQuad }
             }
@@ -48,9 +48,7 @@ ColumnLayout {
                 right: parent.right
                 margins: 5
             }
-            color: ListView.isCurrentItem ? 'lightGray' : 'white'
             height: content.height + 15
-            border.color: "black"
             border.width: 1
             RowLayout {
                 id: content
@@ -94,6 +92,7 @@ ColumnLayout {
                     Button {
                         style: ButtonStyle {}
                         text: "Delete"
+                        visible: !object.sync_in_progress
                         onClicked: {
                             updateSelection()
                             mainController.delete_profile_clicked()

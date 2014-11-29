@@ -11,11 +11,13 @@ class ConfigLoader:
     def __init__(self,
                  path=None):
         paths = self._get_config_file_paths(path)
+        self._path = ''
         self._config = self._load_first_available_config(paths)
         self._profiles = self._parse_profiles()
-        self._credentials = self._parse_credentials()
+        self._credentials = {}
+        #self._credentials = self._parse_credentials()
         self._default_rsync_options = self._parse_default_rsync_options()
-        self._path = ''
+
 
     def _parse_default_rsync_options(self):
         return self._config.get('default_rsync_options', {})
@@ -59,6 +61,7 @@ class ConfigLoader:
             try:
                 with open(i, 'r') as f:
                     config = yaml.load(f)
+                    self._path = i
                     break
             except IOError as err:
                 print(err)

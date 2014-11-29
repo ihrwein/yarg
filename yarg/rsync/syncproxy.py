@@ -42,7 +42,7 @@ class SyncProxy(SyncHandler, SyncObserver):
 
     def failed(self, error_code):
         self._manager.remove_sync(self._profile.name)
-        self._observer.failed()
+        self._observer.failed(error_code)
 
     def aborted(self):
         self._manager.remove_sync()

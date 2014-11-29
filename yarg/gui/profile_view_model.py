@@ -156,6 +156,15 @@ class ProfileViewModel(QObject):
             self._sync_in_progress = val
             self.sync_in_progress_changed.emit()
 
+    out_of_sync_changed = pyqtSignal()
+
+    @pyqtProperty(bool, notify=out_of_sync_changed)
+    def out_of_sync(self):
+        if self._last_sync is None or (datetime.now() - self._last_sync).days >= 7:
+            return True
+        else:
+            return False
+
     def save_changes(self):
         self.model.name = self._name
         self.model.source.path.clear()
