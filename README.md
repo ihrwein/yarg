@@ -9,8 +9,6 @@ You have to install the following dependencies on Ubuntu 14.04:
 python3-pyqt5.qtquick
 python3-pyqt5
 libglu1-mesa-dev
-qtdeclarative5-quicklayouts-plugin
-qtdeclarative5-controls-plugin
 ```
 
 Then, you can install YARG:
