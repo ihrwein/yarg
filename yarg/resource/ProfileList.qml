@@ -64,13 +64,23 @@ ColumnLayout {
                     Text {
                         text: object.name
                     }
+                    Text {
+                        text: object.last_sync
+                    }
+                    Text {
+                        visible: object.sync_in_progress
+                        text: 'synchronizing'
+                    }
                 }
                 RowLayout {
                     anchors.right: parent.right
                     Button {
                         style: ButtonStyle {}
                         text: "Sync"
-                        onClicked: updateSelection()
+                        onClicked: {
+                            updateSelection()
+                            mainController.sync_clicked()
+                        }
                     }
                     Button {
                         style: ButtonStyle {}

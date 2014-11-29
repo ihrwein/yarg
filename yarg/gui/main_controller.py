@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 import yarg
 from yarg.gui.profile_view_model import ProfileViewModel
 from yarg.gui.listmodel import QObjectListModel
+from yarg.gui_sync_observer import GuiSyncObserver
 from yarg.location import Location
 from yarg.profile import Profile
 
@@ -18,6 +19,7 @@ class MainController(QObject):
         profile_list = self._application.get_profiles().items()
         self._profile_model.append(list(map(lambda prof: ProfileViewModel(prof[1]), profile_list)))
         self._selected_profile_index = 0
+        self._synchronizations_in_progress = {}
 
     profile_model_changed = pyqtSignal()
 
@@ -78,3 +80,23 @@ class MainController(QObject):
     @pyqtSlot()
     def edit_panel_close_clicked(self):
         self._selected_profile.discard_changes()
+
+    @pyqtSlot()
+    def sync_clicked(self):
+        if self._synchronizations_in_progress.get(self.selected_profile.name, None) is None:
+            observer = GuiSyncObserver(self.selected_profile, self)
+            handler = self._application.sync_profile(self.selected_profile.name, sync_observer=observer)
+            self._synchronizations_in_progress[self.selected_profile.name] = handler
+            self.selected_profile.sync_in_progress = True
+        else:
+            print('sync already in progress')
+
+    def sync_completed(self, profile_view_model):
+        print('{0} : sync completed'.format(profile_view_model.name))
+        self._synchronizations_in_progress.pop(profile_view_model.name, None)
+        self.selected_profile.sync_in_progress = False
+
+    def sync_failed(self, profile_view_model):
+        print('{0} : sync failed'.format(profile_view_model.name))
+        del self._synchronizations_in_progress[profile_view_model.name]
+        self.selected_profile.sync_in_progress = False

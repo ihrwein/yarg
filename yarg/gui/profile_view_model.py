@@ -13,7 +13,9 @@ class ProfileViewModel(QObject):
         super(ProfileViewModel, self).__init__(parent)
         self.model = model
         self._name = self._last_sync = self._destination_path = \
-            self._remote_component = self._remote_host = self._remote_port = self._remote_user = None
+            self._remote_component = self._remote_host = \
+            self._remote_port = self._remote_user = None
+        self._sync_in_progress = False
         self._init_from_profile()
 
     def _init_from_profile(self):
@@ -141,6 +143,18 @@ class ProfileViewModel(QObject):
     @pyqtProperty(QObjectListModel, notify=rsync_options_changed)
     def rsync_options(self):
         return self._rsync_options
+
+    sync_in_progress_changed = pyqtSignal()
+
+    @pyqtProperty(bool, notify=sync_in_progress_changed)
+    def sync_in_progress(self):
+        return self._sync_in_progress
+
+    @sync_in_progress.setter
+    def sync_in_progress(self, val):
+        if self._sync_in_progress != val:
+            self._sync_in_progress = val
+            self.sync_in_progress_changed.emit()
 
     def save_changes(self):
         self.model.name = self._name
