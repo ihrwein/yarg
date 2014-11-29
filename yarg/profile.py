@@ -1,6 +1,7 @@
 from datetime import timezone
-from yarg.location import Location
 
+from yarg.sshoptions import SSHOptions
+from yarg.location import Location
 
 
 class Profile:
@@ -11,7 +12,7 @@ class Profile:
                  last_sync=None,
                  rsync_options=None,
                  credentials=None,
-                 sshoptions=None):
+                 sshoptions=SSHOptions()):
         if rsync_options is None:
             rsync_options = {}
         self.name = name

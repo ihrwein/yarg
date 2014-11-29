@@ -77,7 +77,21 @@ Tab {
             RowLayout {
                 Layout.preferredHeight: rowHeight
                 Layout.fillWidth: true
-                ExclusiveGroup { id: remoteComponentSelectionGroup }
+                ExclusiveGroup {
+                    id: remoteComponentSelectionGroup
+                    Component.onCompleted: {
+                        if(mainController.selected_profile.remote_component == 'Source') {
+                            current = remoteSourceButton
+                        } else if (mainController.selected_profile.remote_component == 'Destination') {
+                            current = remoteDestinationButton
+                        } else if (mainController.selected_profile.remote_component == 'Neither') {
+                            current = noRemoteComponentButton
+                        }
+                    }
+                    onCurrentChanged: {
+                        mainController.selected_profile.remote_component = current.text
+                    }
+                }
                 RadioButton {
                     Layout.fillWidth: true
                     id: remoteSourceButton
@@ -87,7 +101,6 @@ Tab {
                 RadioButton {
                     Layout.fillWidth: true
                     id: remoteDestinationButton
-                    checked: true
                     text: 'Destination'
                     exclusiveGroup: remoteComponentSelectionGroup
                 }
@@ -122,7 +135,13 @@ Tab {
                     }
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
-                    text: 'host'
+                    id: remote_host_value
+                    text: mainController.selected_profile.remote_host
+                }
+                Binding {
+                    target: mainController.selected_profile
+                    property: 'remote_host'
+                    value: remote_host_value.text
                 }
             }
             RowLayout {
@@ -144,7 +163,13 @@ Tab {
                     }
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
-                    text: 'port'
+                    id: remote_port_value
+                    text: mainController.selected_profile.remote_port
+                }
+                Binding {
+                    target: mainController.selected_profile
+                    property: 'remote_port'
+                    value: remote_port_value.text
                 }
             }
             RowLayout {
@@ -166,7 +191,13 @@ Tab {
                     }
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
-                    text: 'user'
+                    id: remote_user_value
+                    text: mainController.selected_profile.remote_user
+                }
+                Binding {
+                    target: mainController.selected_profile
+                    property: 'remote_user'
+                    value: remote_user_value.text
                 }
             }
         }
@@ -183,13 +214,19 @@ Tab {
             }
             TextField {
                 Layout.fillWidth: true
-                text: 'path'
                 horizontalAlignment: Text.AlignHCenter
                 anchors {
                     verticalCenter: parent.verticalCenter
                     right: parent.right
                     rightMargin: 10
                 }
+                id: destination_path_value
+                text: mainController.selected_profile.destination_path
+            }
+            Binding {
+                target: mainController.selected_profile
+                property: 'destination_path'
+                value: destination_path_value.text
             }
         }
         RowLayout {

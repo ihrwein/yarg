@@ -1,16 +1,17 @@
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
-from datetime import datetime
-import yarg
 
+import yarg
 from yarg.gui.profile_view_model import ProfileViewModel
 from yarg.gui.listmodel import QObjectListModel
+from yarg.location import Location
 from yarg.profile import Profile
 
 
 class MainController(QObject):
     def __init__(self, parent=None):
         super(MainController, self).__init__(parent)
-        self._selected_profile = ProfileViewModel(Profile('dummy profile'))
+        self._selected_profile = ProfileViewModel(
+            Profile('dummy profile', source=Location(path=['']), destination=Location(path=[''])))
         self._new_profile = None
         self._application = yarg.application.instance('yarg.conf')
         self._profile_model = QObjectListModel()
