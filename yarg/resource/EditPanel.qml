@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.0
 
 ColumnLayout {
     width: parent.width
+    height: parent.height
     RowLayout {
         spacing: 0
         width: parent.width
@@ -36,35 +37,29 @@ ColumnLayout {
         horizontalAlignment: Text.AlignHCenter
         text : mainController.selected_profile.name
     }
+    property int rowHeight: 25
     TabView {
+        id: tabView
         Layout.fillWidth: true
         Layout.fillHeight: true
         Tab {
-            title:'Basic options'
-            /*
-            Column {
-                spacing: 0
-                Rectangle {
-                    width: 50
-                    height: 50
-                }
-                Rectangle {
-                    width: 50
-                    height: 50
-                }
-            }
-            */
-            Column {
-                anchors.fill: parent
+            height: parent.height
+            width: parent.width
+            title: 'Basic options'
+            ColumnLayout {
+                height: parent.height
+                width: parent.width
+                anchors.top: parent.top
+                anchors.topMargin: 10
                 RowLayout {
-                    width: parent.width
-                    height: 40
+                    Layout.preferredHeight: rowHeight
+                    Layout.fillWidth: true
                     Text {
                         anchors {
                             verticalCenter: parent.verticalCenter
                         }
                         horizontalAlignment: Text.AlignHCenter
-                        Layout.preferredWidth: parent.width / 3
+                        Layout.preferredWidth: tabView.width / 3
                         text: 'Name'
                     }
                     TextField {
@@ -85,59 +80,15 @@ ColumnLayout {
                     }
                 }
                 RowLayout {
+                    Layout.preferredHeight: rowHeight
                     width: parent.width
-                    height: 40
                     Text {
                         anchors {
                             verticalCenter: parent.verticalCenter
                         }
                         horizontalAlignment: Text.AlignHCenter
-                        Layout.preferredWidth: parent.width / 3
-                        text: 'Source'
-                    }
-                    TextField {
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            right: parent.right
-                            rightMargin: 10
-                        }
-                        horizontalAlignment: Text.AlignHCenter
-                        Layout.fillWidth: true
-                        text: mainController.selected_profile.source
-                    }
-                }
-                RowLayout {
-                    width: parent.width
-                    height: 40
-                    Text {
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                        }
-                        horizontalAlignment: Text.AlignHCenter
-                        Layout.preferredWidth: parent.width / 3
-                        text: 'Destination'
-                    }
-                    TextField {
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            right: parent.right
-                            rightMargin: 10
-                        }
-                        horizontalAlignment: Text.AlignHCenter
-                        Layout.fillWidth: true
-                        text: mainController.selected_profile.destination
-                    }
-                }
-                RowLayout {
-                    width: parent.width
-                    height: 40
-                    Text {
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                        }
-                        horizontalAlignment: Text.AlignHCenter
-                        Layout.preferredWidth: parent.width / 3
-                        text: 'Last synced'
+                        Layout.preferredWidth: tabView.width / 3
+                        text: 'Last synchronization'
                     }
                     Text {
                         anchors {
@@ -150,12 +101,180 @@ ColumnLayout {
                         text: mainController.selected_profile.last_sync
                     }
                 }
+                RowLayout {
+                    Layout.preferredHeight: rowHeight
+                    width: parent.width
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: tabView.width / 3
+                        text: 'Remote component'
+                    }
+                    RowLayout {
+                        Layout.preferredHeight: rowHeight
+                        Layout.fillWidth: true
+                        ExclusiveGroup { id: remoteComponentSelectionGroup }
+                        RadioButton {
+                            Layout.fillWidth: true
+                            id: remoteSourceButton
+                            text: 'Source'
+                            exclusiveGroup: remoteComponentSelectionGroup
+                        }
+                        RadioButton {
+                            Layout.fillWidth: true
+                            id: remoteDestinationButton
+                            checked: true
+                            text: 'Destination'
+                            exclusiveGroup: remoteComponentSelectionGroup
+                        }
+                        RadioButton {
+                            Layout.fillWidth: true
+                            id: noRemoteComponentButton
+                            text: 'Neither'
+                            exclusiveGroup: remoteComponentSelectionGroup
+                        }
+                    }
+                }
+                ColumnLayout {
+                    id: remoteComponentConfiguration
+                    visible: !noRemoteComponentButton.checked
+                    Layout.fillWidth: true
+                    RowLayout {
+                        Layout.preferredHeight: rowHeight
+                        width: parent.width
+                        Text {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                            }
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.preferredWidth: tabView.width / 3
+                            text: 'Remote host'
+                        }
+                        TextField {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                                rightMargin: 10
+                            }
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.fillWidth: true
+                            text: 'host'
+                        }
+                    }
+                    RowLayout {
+                        Layout.preferredHeight: rowHeight
+                        width: parent.width
+                        Text {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                            }
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.preferredWidth: tabView.width / 3
+                            text: 'Remote port'
+                        }
+                        TextField {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                                rightMargin: 10
+                            }
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.fillWidth: true
+                            text: 'port'
+                        }
+                    }
+                    RowLayout {
+                        Layout.preferredHeight: rowHeight
+                        width: parent.width
+                        Text {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                            }
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.preferredWidth: tabView.width / 3
+                            text: 'Remote user'
+                        }
+                        TextField {
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                                rightMargin: 10
+                            }
+                            horizontalAlignment: Text.AlignHCenter
+                            Layout.fillWidth: true
+                            text: 'user'
+                        }
+                    }
+                }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: rowHeight
+                    Text {
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: tabView.width / 3
+                        text: 'Destination path'
+                    }
+                    TextField {
+                        Layout.fillWidth: true
+                        text: 'path'
+                        horizontalAlignment: Text.AlignHCenter
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                    }
+                }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Text {
+                        Layout.fillHeight: true
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: tabView.width / 3
+                        text: 'Source paths'
+                    }
+                    ColumnLayout {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        anchors {
+                            right: parent.right
+                            rightMargin: 10
+                        }
+                        Button {
+                            Layout.fillWidth: true
+                            text: '+'
+                            onClicked: {
+                                mainController.selected_profile.source_paths.addItem("asd")
+                            }
+                        }
+                        ListView {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            model: mainController.selected_profile.source_paths
+                            delegate: RowLayout {
+                                height: rowHeight + 5
+                                width: parent.width
+                                TextField {
+                                    Layout.fillWidth: true
+                                    text: object
+                                }
+                                Button { text: '-' }
+                            }
+                        }
+                    }
+                }
             }
         }
         Tab {
-            title:'Rsync parameters'
+            title: 'Rsync parameters'
             ListView {
-                width: parent.width
+                Layout.fillWidth: true
                 Layout.fillHeight: true
                 model: mainController.selected_profile.rsync_options
                 spacing:0
@@ -170,8 +289,7 @@ ColumnLayout {
                         Text {
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
-                            Layout.fillWidth: true
-                            Layout.maximumWidth: parent.width / 3
+                            Layout.preferredWidth: tabView.width / 3
                             text: object.key
                         }
                         Loader {
