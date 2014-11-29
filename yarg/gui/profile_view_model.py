@@ -11,7 +11,8 @@ class ProfileViewModel(QObject):
         super(ProfileViewModel, self).__init__(parent)
         self.model = model
         self._name = model.name
-        self._source = model.source
+        self._source_paths = QObjectListModel()
+        self._source_paths.append('/home/tegi/dir')
         self._destination = model.destination
         self._last_sync = model.last_sync
         self._rsync_options = QObjectListModel()
@@ -30,17 +31,9 @@ class ProfileViewModel(QObject):
             self._name = val
             self.name_changed.emit()
 
-    source_changed = pyqtSignal()
-
-    @pyqtProperty(str, notify=source_changed)
-    def source(self):
-        return self._source
-
-    @source.setter
-    def source(self, val):
-        if self._source != val:
-            self._source = val
-            self.source_changed.emit()
+    @pyqtProperty(QObjectListModel, constant=True)
+    def source_paths(self):
+        return self._source_paths
 
     destination_changed = pyqtSignal()
 
