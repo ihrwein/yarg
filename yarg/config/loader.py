@@ -32,12 +32,12 @@ class ConfigLoader:
 
     def _get_config_file_paths(self, first_path=None):
         conffile_name = '.yarg.conf'
-        home_dir = os.getenv('HOME')
+        home_conf_file = '~/.yarg.conf'
 
         cwd_conf = os.path.join(os.path.abspath(os.path.curdir),
                                 conffile_name)
-        home_conf = os.path.join(home_dir, conffile_name)
-        confdir_conf = os.path.join(home_dir, '.config', 'yarg', conffile_name)
+        home_conf = os.path.expanduser(home_conf_file)
+        confdir_conf = os.path.join(os.path.expanduser('~/.config'), 'yarg', conffile_name)
 
         paths = [cwd_conf, home_conf, confdir_conf]
 
