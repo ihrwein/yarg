@@ -39,9 +39,6 @@ class ConfigSaver:
         if location.is_remote is not None:
             l['remote'] = location.is_remote
 
-        if location.host is not None:
-            l['host'] = location.host
-
         return l
 
     def _dump_profiles(self):
@@ -62,6 +59,9 @@ class ConfigSaver:
 
                 if v.sshoptions.user:
                     o['user'] = v.sshoptions.user
+
+                if v.sshoptions.host is not None:
+                    o['host'] = v.sshoptions.host
 
                 p['ssh'] = o
             profiles.append(p)

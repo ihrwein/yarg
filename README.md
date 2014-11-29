@@ -39,7 +39,6 @@ profiles:
      destination:
        path:
        - /tmp/target/
-       host: jimmy.sch.bme.hu
        remote: true
      credentials: public_key
      last_sync: 1417030174.658952
@@ -52,4 +51,5 @@ profiles:
      ssh:
        port: 10022
        identity_file: ~/.ssh/id_rsa
+       host: jimmy.sch.bme.hu
 ```
