@@ -10,16 +10,12 @@ from yarg.profile import Profile
 class MainController(QObject):
     def __init__(self, parent=None):
         super(MainController, self).__init__(parent)
-        self._selected_profile = ProfileViewModel(Profile('dummy profile', {}))
+        self._selected_profile = ProfileViewModel(Profile('dummy profile'))
         self._new_profile = None
-        #self._application = yarg.application.instance('./yarg_gui.conf')
-        self.profiles = [Profile('Profile1', source='Src', destination='Dst', last_sync=datetime.now(),
-                                 rsync_options={'float_option': 42.42, 'bool_option': True,
-                                                'string_option': 'some string', 'string_option2': 'some string2',
-                                                'int_option': 42}), Profile('Profile2')]
-
+        self._application = yarg.application.instance('yarg.conf')
         self._profile_model = QObjectListModel()
-        self._profile_model.append(list(map(lambda prof: ProfileViewModel(prof), self.profiles)))
+        profile_list = self._application.get_profiles().items()
+        self._profile_model.append(list(map(lambda prof: ProfileViewModel(prof[1]), profile_list)))
         self._selected_profile_index = 0
 
     profile_model_changed = pyqtSignal()
