@@ -16,7 +16,7 @@ class CredentialsFactory:
 
         factory_method = _FACTORY_METHODS.get(type)
         if factory_method:
-            factory_method(config)
+            return factory_method(config)
         else:
             return None
 

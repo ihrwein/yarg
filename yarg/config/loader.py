@@ -69,3 +69,6 @@ class ConfigLoader:
 
     def get_credentials(self):
         return self._credentials
+
+    def get_path(self):
+        return self._path
