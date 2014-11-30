@@ -287,6 +287,7 @@ Tab {
                     }
                 }
                 ListView {
+                    clip: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                     model: mainController.selected_profile.source_paths

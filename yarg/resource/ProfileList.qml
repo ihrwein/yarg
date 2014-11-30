@@ -67,6 +67,7 @@ ColumnLayout {
                         text: object.name
                     }
                     RowLayout {
+                        Layout.minimumHeight: 30
                         Layout.fillWidth:true
                         Text {
                             Layout.fillWidth:true

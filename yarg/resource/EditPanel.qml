@@ -51,6 +51,7 @@ ColumnLayout {
         Tab {
             title: 'Rsync parameters'
             ListView {
+                clip: true
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 model: mainController.selected_profile.rsync_options
