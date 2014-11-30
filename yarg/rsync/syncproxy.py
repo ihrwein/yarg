@@ -6,7 +6,7 @@ from yarg.synchandler import SyncHandler
 from yarg.syncobserver import SyncObserver
 
 
-POLL_INTERVAL = 0.01
+POLL_INTERVAL = 0.1
 
 
 class SyncProxy(SyncHandler, SyncObserver):
