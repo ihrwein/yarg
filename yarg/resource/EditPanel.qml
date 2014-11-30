@@ -68,7 +68,7 @@ ColumnLayout {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             property variant model: object
-                            sourceComponent: object.option_type == 'bool' ? bool_option_model : object.option_type == 'string' ? string_option_model : int_option_model
+                            sourceComponent: object.option_type == 'bool' ? bool_option_model : object.option_type == 'str' ? string_option_model : int_option_model
                         }
                     }
                 }
@@ -79,8 +79,8 @@ ColumnLayout {
         id: bool_option_model
         Item {
             anchors {
-                right: parent.right
-                rightMargin: 10
+                //right: parent.right
+                //rightMargin: 10
             }
             CheckBox {
                 id: bool_option_value
@@ -115,6 +115,7 @@ ColumnLayout {
                 width: parent.width
                 id: string_option_value
                 text: model.value
+                placeholderText: model.hint
             }
             Binding {
                 target: model
@@ -137,6 +138,7 @@ ColumnLayout {
                 width: parent.width
                 id: int_option_value
                 text: model.value
+                placeholderText: model.hint
                 validator: IntValidator {}
             }
             Binding {
@@ -160,6 +162,7 @@ ColumnLayout {
                 width: parent.width
                 id: float_option_value
                 text: model.value
+                placeholderText: model.hint
                 validator: DoubleValidator {locale: 'en-US'}
             }
             Binding {

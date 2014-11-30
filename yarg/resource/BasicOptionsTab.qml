@@ -75,21 +75,27 @@ Tab {
                 text: 'Remote component'
             }
             RowLayout {
+                id: remoteComponentConfig
                 Layout.preferredHeight: rowHeight
                 Layout.fillWidth: true
+                Connections {
+                    target: mainController.selected_profile
+                    onRemote_component_changed: { remoteComponentConfig.changeCurrent() }
+                }
                 ExclusiveGroup {
                     id: remoteComponentSelectionGroup
-                    Component.onCompleted: {
-                        if(mainController.selected_profile.remote_component == 'Source') {
-                            current = remoteSourceButton
-                        } else if (mainController.selected_profile.remote_component == 'Destination') {
-                            current = remoteDestinationButton
-                        } else if (mainController.selected_profile.remote_component == 'Neither') {
-                            current = noRemoteComponentButton
-                        }
-                    }
+                    Component.onCompleted: { remoteComponentConfig.changeCurrent() }
                     onCurrentChanged: {
                         mainController.selected_profile.remote_component = current.text
+                    }
+                }
+                function changeCurrent() {
+                    if(mainController.selected_profile.remote_component == 'Source') {
+                        remoteComponentSelectionGroup.current = remoteSourceButton
+                    } else if (mainController.selected_profile.remote_component == 'Destination') {
+                        remoteComponentSelectionGroup.current = remoteDestinationButton
+                    } else if (mainController.selected_profile.remote_component == 'Neither') {
+                        remoteComponentSelectionGroup.current = noRemoteComponentButton
                     }
                 }
                 RadioButton {
@@ -200,6 +206,34 @@ Tab {
                     value: remote_user_value.text
                 }
             }
+            RowLayout {
+                Layout.preferredHeight: rowHeight
+                width: parent.width
+                Text {
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                    }
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.preferredWidth: tabView.width / 3
+                    text: 'Remote private key'
+                }
+                TextField {
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        right: parent.right
+                        rightMargin: 10
+                    }
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.fillWidth: true
+                    id: remote_identity_file_value
+                    text: mainController.selected_profile.remote_identity_file
+                }
+                Binding {
+                    target: mainController.selected_profile
+                    property: 'remote_identity_file'
+                    value: remote_identity_file_value.text
+                }
+            }
         }
         RowLayout {
             Layout.fillWidth: true
@@ -260,8 +294,14 @@ Tab {
                         height: rowHeight + 5
                         width: parent.width
                         TextField {
+                            id: sourcePathTextValue
                             Layout.fillWidth: true
-                            text: object
+                            text: object.text
+                        }
+                        Binding {
+                            target: object
+                            property: 'text'
+                            value: sourcePathTextValue.text
                         }
                         Button {
                             text: '-'

@@ -44,6 +44,7 @@ Item {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
+        /*
         TextField {
             id: newProfileName
             focus: true
@@ -62,6 +63,7 @@ Item {
                 value: newProfileName.text
             }
         }
+        */
         Item {
             Layout.fillHeight: true
             Layout.fillWidth:true

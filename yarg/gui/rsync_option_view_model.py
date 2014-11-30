@@ -3,21 +3,11 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QVariant
 
 class RsyncOptionViewModel(QObject):
     def __init__(self, model=None, parent=None):
-        '''Model should be a tuple from a dict'''
         super(RsyncOptionViewModel, self).__init__(parent)
-        self._key = model[0]
-        #self._value = QVariant(model[1])
-        self._value = model[1]
-        self._option_type = 'undefined'
-        if isinstance(model[1], bool):
-            self._option_type = 'bool'
-        elif isinstance(model[1], str):
-            self._option_type = 'string'
-        elif isinstance(model[1], float):
-            self._option_type = 'float'
-        # isinstance(True, int) == True !!
-        elif isinstance(model[1], int):
-            self._option_type = 'int'
+        self._key = model['key']
+        self._hint = model['hint']
+        self._value = model['value']
+        self._option_type = model['type']
 
     @pyqtProperty(str, constant=True)
     def option_type(self):
@@ -26,6 +16,10 @@ class RsyncOptionViewModel(QObject):
     @pyqtProperty(str, constant=True)
     def key(self):
         return self._key
+
+    @pyqtProperty(str, constant=True)
+    def hint(self):
+        return self._hint
 
     valueChanged = pyqtSignal()
 

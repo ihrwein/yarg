@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 import yarg
 from yarg.gui.profile_view_model import ProfileViewModel
 from yarg.gui.listmodel import QObjectListModel
+from yarg.gui.source_path_view_model import SourcePathViewModel
 from yarg.gui_sync_observer import GuiSyncObserver
 from yarg.location import Location
 from yarg.profile import Profile
@@ -11,8 +12,8 @@ from yarg.profile import Profile
 class MainController(QObject):
     def __init__(self, parent=None):
         super(MainController, self).__init__(parent)
-        self._selected_profile = ProfileViewModel(
-            Profile('dummy profile', source=Location(path=['']), destination=Location(path=[''])))
+        # self._selected_profile = ProfileViewModel(
+        #     Profile('dummy profile', source=Location(path=['']), destination=Location(path=[''])))
         self._new_profile = None
         self._application = yarg.application.instance('yarg.conf')
         self._profile_model = QObjectListModel()
@@ -33,12 +34,6 @@ class MainController(QObject):
     def selected_profile(self):
         return self._selected_profile
 
-    new_profile_changed = pyqtSignal()
-
-    @pyqtProperty(ProfileViewModel, notify=new_profile_changed)
-    def new_profile(self):
-        return self._new_profile
-
     @pyqtSlot(int)
     def profile_selection_changed(self, index):
         self._selected_profile = self._profile_model[index]
@@ -47,7 +42,7 @@ class MainController(QObject):
 
     @pyqtSlot()
     def add_source_path_clicked(self):
-        self.selected_profile.source_paths.append('')
+        self.selected_profile.source_paths.append(SourcePathViewModel(''))
 
     @pyqtSlot(int)
     def remove_source_path_clicked(self, index):
@@ -88,6 +83,15 @@ class MainController(QObject):
         else:
             print('sync already in progress')
 
+    @pyqtSlot(str)
+    def abort_sync_clicked(self, profile_name):
+        handler = self._synchronizations_in_progress.get[profile_name]
+        handler.abort()
+
+    def sync_aborted(self, profile_view_model):
+        self._synchronizations_in_progress.pop(profile_view_model.name, None)
+        self.selected_profile.sync_in_progress = False
+
     def sync_completed(self, profile_view_model):
         print('{0} : sync completed'.format(profile_view_model.name))
         self._synchronizations_in_progress.pop(profile_view_model.name, None)
@@ -98,5 +102,5 @@ class MainController(QObject):
 
     def sync_failed(self, profile_view_model):
         print('{0} : sync failed'.format(profile_view_model.name))
-        del self._synchronizations_in_progress[profile_view_model.name]
+        self._synchronizations_in_progress.pop(profile_view_model.name, None)
         self.selected_profile.sync_in_progress = False

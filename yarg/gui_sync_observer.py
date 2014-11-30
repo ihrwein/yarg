@@ -16,4 +16,4 @@ class GuiSyncObserver(SyncObserver):
         pass
 
     def aborted(self):
-        pass
+        self._gui_controller.sync_aborted(self.profile_view_model)

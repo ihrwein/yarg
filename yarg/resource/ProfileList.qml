@@ -85,17 +85,19 @@ ColumnLayout {
                         text: "Edit"
                         onClicked: {
                             updateSelection()
-                            //flipBar.flipUp()
-                            stackView.push(editPanel)
+                            stackView.push(Qt.createComponent('EditPanel.qml'))
                         }
                     }
                     Button {
                         style: ButtonStyle {}
-                        text: "Delete"
-                        visible: !object.sync_in_progress
+                        text: object.sync_in_progress ? 'Abort' : 'Delete'
                         onClicked: {
-                            updateSelection()
-                            mainController.delete_profile_clicked()
+                            if(object.sync_in_progress) {
+                                updateSelection()
+                                mainController.delete_profile_clicked()
+                            } else {
+                                mainController.abort_sync_clicked(object.name)
+                            }
                         }
                     }
                 }
