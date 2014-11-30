@@ -1,7 +1,16 @@
-
 from setuptools import setup, find_packages
+
 setup(
-    name = "Yet Another RSync GUI",
-    version = "0.1",
-    packages = find_packages(), requires=['PyQt5']
+    name="YARG",
+    version="1.0",
+    install_requires=['PyYAML',],
+    scripts=['runner.py'],
+    packages = find_packages(),
+    #packages=['yarg'],
+    package_data={'yarg': ['resource/*']},
+    entry_points={
+        'gui_scripts': [
+            'yarg = runner:main'
+        ]
+    }
 )

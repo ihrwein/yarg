@@ -12,7 +12,7 @@ class Application:
         self._sync_manager = SyncManager()
 
     def add_new_profile(self, profile):
-        if profile not in self._profiles:
+        if profile.name not in self._profiles:
             self._profiles[profile.name] = profile
 
     def remove_profile(self, name):
