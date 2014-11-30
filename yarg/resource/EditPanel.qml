@@ -15,8 +15,8 @@ ColumnLayout {
             Layout.fillWidth: true
             text: "Save & Close"
             onClicked: {
-                mainController.edit_panel_save_clicked()
                 stackView.pop();
+                mainController.edit_panel_save_clicked()
             }
         }
         Button {
@@ -24,8 +24,8 @@ ColumnLayout {
             Layout.fillWidth: true
             text: "Close"
             onClicked: {
-                mainController.edit_panel_close_clicked()
                 stackView.pop();
+                mainController.edit_panel_close_clicked()
             }
         }
     }
@@ -114,8 +114,8 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 width: parent.width
                 id: string_option_value
-                text: model.value
-                placeholderText: model.hint
+                text: model ? model.value : ''
+                placeholderText: model ? model.hint : ''
             }
             Binding {
                 target: model
@@ -137,8 +137,8 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 width: parent.width
                 id: int_option_value
-                text: model.value
-                placeholderText: model.hint
+                text: model ? model.value : ''
+                placeholderText: model ? model.hint : ''
                 validator: IntValidator {}
             }
             Binding {

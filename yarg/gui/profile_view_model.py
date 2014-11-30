@@ -55,7 +55,6 @@ class ProfileViewModel(QObject):
             if key in self.model.rsync_options:
                 item['value'] = self.model.rsync_options[key]
             rsync_options.append(item)
-
         self._rsync_options = QObjectListModel()
         for item in sorted(rsync_options, key=lambda opt: opt['key']):
             self._rsync_options.append(RsyncOptionViewModel(item))
@@ -230,4 +229,7 @@ class ProfileViewModel(QObject):
                 self.model.rsync_options[option.key] = option.value
 
     def discard_changes(self):
+        self._rsync_options.clear()
+        self.rsync_options_changed.emit()
+        self._source_paths.clear()
         self._init_from_profile()
