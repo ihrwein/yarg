@@ -78,10 +78,6 @@ ColumnLayout {
     Component {
         id: bool_option_model
         Item {
-            anchors {
-                //right: parent.right
-                //rightMargin: 10
-            }
             CheckBox {
                 id: bool_option_value
                 anchors {
