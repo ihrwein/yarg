@@ -19,11 +19,8 @@ class SyncProxy(SyncHandler, SyncObserver):
         self._watcher_thread.start()
 
     def _watch_handler(self):
-        print('Sync watcher thread started')
         while self._handler_popen.poll() is None:
-            print('Polling rsync')
             time.sleep(POLL_INTERVAL)
-        print('Rsync exited')
         retcode = self._handler_popen.poll()
         if retcode == 0:
             self.completed()
