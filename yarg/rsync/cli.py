@@ -7,7 +7,7 @@ class CLIOptions:
     def get_command_and_options(self):
         rsync_options = [self._command, ]
 
-        if 'rsh' not in self.profile.rsync_options:
+        if 'rsh' not in self.profile.rsync_options and (self.profile.source.is_remote or self.profile.destination.is_remote):
             self.profile.rsync_options['rsh'] = 'ssh'
 
         if 'rsh' in self.profile.rsync_options and self.profile.rsync_options['rsh'].startswith('ssh'):
@@ -46,6 +46,8 @@ class CLIOptions:
             dest = CLIOptions._format_endpoint(duser, self.profile.sshoptions.host,
                                                self.profile.destination.path[0])
             rsync_options.append(dest)
+        else:
+            rsync_options.append(self.profile.destination.path[0])
 
         return rsync_options
 
