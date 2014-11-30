@@ -83,7 +83,7 @@ class MainController(QObject):
 
     @pyqtSlot(str)
     def abort_sync_clicked(self, profile_name):
-        handler = self._synchronizations_in_progress.get[profile_name]
+        handler = self._synchronizations_in_progress[profile_name]
         handler.abort()
 
     def sync_aborted(self, profile_view_model):
