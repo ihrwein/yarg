@@ -4,57 +4,26 @@
 
 ### Linux
 
-You can install the dependencies with the following command on Ubuntu 14.04:
+You can install the required dependencies with the following commands on Ubuntu 14.04:
 ```
 apt-get install qtdeclarative5-quicklayouts-plugin qtdeclarative5-controls-plugin python3 python3-pyqt5 python3-pyqt5.qtquick python3-setuptools
 easy_install3 PyYAML
 ```
 
+Clone the source code into a directory:
+```
+git clone https://github.com/ihrwein/yarg.git
+```
+
 Then, you can install YARG:
 ```
-python3 setup.py install --user
+python3 setup.py install
 ```
 
 ## Configuration
 
-A sample config file:
-
-```yaml
-default_rsync_options:
-  verbose: false
-  info: FLAGS
-  debug: FLAGS
-  msgs2stderr: false
-
-profiles:
-   - name: local
-     source:
-       path:
-       - /tmp/source/
-     destination:
-       path:
-       - /tmp/target/
-     last_sync: 1417030174.658952
-     rsync_options:
-       partial: true
-       force: true
-       chmod: "600"
-   - name: Backup server 1
-     source:
-       path:
-       - /tmp/source/
-     destination:
-       path:
-       - /tmp/target/
-       remote: true
-     last_sync: 1417030174.658952
-     rsync_options:
-       partial: true
-       force: true
-       chmod: "600"
-       rsh: ssh
-     ssh:
-       port: 10022
-       identity_file: ~/.ssh/id_rsa
-       host: jimmy.sch.bme.hu
+You have to copy a configuration file into your HOME directory (from the clones git repo):
 ```
+cp tests/yarg.conf ~/.yarg.conf
+```
+Now, you are ready to use YARG!
