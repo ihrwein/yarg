@@ -207,7 +207,7 @@ class ProfileViewModel(QObject):
         self.model.source.path.clear()
         for path in self._source_paths:
             self.model.source.path.append(path.text)
-        self.model.destination_path = self._destination_path
+        self.model.destination.path = [self._destination_path]
         if self._remote_component == 'Neither':
             self.model.sshoptions = None
             self.model.source.is_remote = False
