@@ -15,7 +15,7 @@ class MainController(QObject):
         # self._selected_profile = ProfileViewModel(
         #     Profile('dummy profile', source=Location(path=['']), destination=Location(path=[''])))
         self._new_profile = None
-        self._application = yarg.application.instance('yarg.conf')
+        self._application = yarg.application.instance()
         self._profile_model = QObjectListModel()
         profile_list = sorted(self._application.get_profiles().items(), key=lambda prof: str.lower(prof[1].name))
         self._profile_model.append(list(map(lambda prof: ProfileViewModel(prof[1]), profile_list)))
