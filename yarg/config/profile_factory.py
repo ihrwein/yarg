@@ -19,7 +19,6 @@ class ProfileFactory:
             last_sync = datetime.datetime.fromtimestamp(config.get('last_sync'))
 
         sshoptions = SSHOptions.create_from_config(config.get('ssh', {}))
-        credentials = config.get('credentials', None)
         return Profile(name, source=source, destination=destination,
                        last_sync=last_sync, rsync_options=rsync_options,
-                       credentials=credentials, sshoptions=sshoptions)
+                       sshoptions=sshoptions)

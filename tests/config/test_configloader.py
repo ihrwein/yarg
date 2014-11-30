@@ -6,8 +6,8 @@ from yarg.config import ConfigLoader
 
 
 RAW_CONFIG = {
-    'credentials': [],
-    'profiles': []
+    'profiles': [],
+    'default_rsync_options': []
 }
 
 

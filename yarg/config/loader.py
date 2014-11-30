@@ -3,7 +3,6 @@ import os.path
 import yaml
 
 from yarg.config.profile_factory import ProfileFactory
-from yarg.config import CredentialsFactory
 
 
 class ConfigLoader:
@@ -14,8 +13,6 @@ class ConfigLoader:
         self._path = ''
         self._config = self._load_first_available_config(paths)
         self._profiles = self._parse_profiles()
-        self._credentials = {}
-        #self._credentials = self._parse_credentials()
         self._default_rsync_options = self._parse_default_rsync_options()
 
 
@@ -29,9 +26,6 @@ class ConfigLoader:
             items[i['name']] = c
 
         return items
-
-    def _parse_credentials(self):
-        return self._parse_config('credentials', CredentialsFactory.create_from_config)
 
     def _parse_profiles(self):
         return self._parse_config('profiles', ProfileFactory.create_from_config)
@@ -73,9 +67,6 @@ class ConfigLoader:
 
     def get_profiles(self):
         return self._profiles
-
-    def get_credentials(self):
-        return self._credentials
 
     def get_path(self):
         return self._path

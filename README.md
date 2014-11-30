@@ -21,12 +21,6 @@ python3 setup.py install --user
 A simple config file:
 
 ```yaml
-credentials:
-  - name: username
-    type: username_password
-    username: test
-    password: secret
-
 default_rsync_options:
   verbose: false
   info: FLAGS
@@ -54,7 +48,6 @@ profiles:
        path:
        - /tmp/target/
        remote: true
-     credentials: public_key
      last_sync: 1417030174.658952
      rsync_options:
        partial: true

@@ -11,7 +11,6 @@ class Profile:
                  destination=None,
                  last_sync=None,
                  rsync_options=None,
-                 credentials=None,
                  sshoptions=SSHOptions()):
         if rsync_options is None:
             rsync_options = {}
@@ -28,7 +27,6 @@ class Profile:
         if rsync_options is None:
             rsync_options = {}
         self.rsync_options = rsync_options
-        self.credentials = credentials
         self.sshoptions = sshoptions
 
     def dump_as_config(self):
@@ -42,9 +40,6 @@ class Profile:
 
         if self.destination:
             config['destination'] = self.destination.dump_as_config()
-
-        if self.credentials:
-            config['credentials'] = self.credentials
 
         if self.sshoptions:
             config['ssh'] = self.sshoptions.dump_as_config()

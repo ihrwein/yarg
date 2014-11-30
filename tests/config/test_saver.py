@@ -9,8 +9,7 @@ class TestConfigSaver(unittest.TestCase):
     def test_save_loaded_config(self):
         cl = ConfigLoader('yarg.conf')
         profiles = cl.get_profiles()
-        credentials = cl.get_credentials()
-        saver = ConfigSaver('_yarg.conf', profiles, credentials, cl.get_default_rsync_options())
+        saver = ConfigSaver('_yarg.conf', profiles, cl.get_default_rsync_options())
         saver.save()
 
 
