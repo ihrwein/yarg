@@ -12,8 +12,6 @@ from yarg.profile import Profile
 class MainController(QObject):
     def __init__(self, parent=None):
         super(MainController, self).__init__(parent)
-        # self._selected_profile = ProfileViewModel(
-        #     Profile('dummy profile', source=Location(path=['']), destination=Location(path=[''])))
         self._new_profile = None
         self._application = yarg.application.instance()
         self._profile_model = QObjectListModel()
