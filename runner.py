@@ -8,10 +8,6 @@ from PyQt5.QtQml import qmlRegisterType, QQmlApplicationEngine
 from yarg.gui.main_controller import MainController
 from yarg.gui.profile_view_model import ProfileViewModel
 
-import os
-b = os.path.join(sys.prefix, 'yarg/resource/main.qml')
-print(b)
-
 # decompresses all resources we need, do not remove!
 pkg_resources.resource_filename('yarg', 'resource')
 
