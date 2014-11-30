@@ -12,6 +12,7 @@ from yarg.gui.source_path_view_model import SourcePathViewModel
 class ProfileViewModel(QObject):
     def __init__(self, model, parent=None):
         super(ProfileViewModel, self).__init__(parent)
+        self._application = yarg.application.instance()
         self.model = model
         self._name = self._last_sync = self._destination_path = \
             self._remote_component = self._remote_host = \
@@ -40,7 +41,7 @@ class ProfileViewModel(QObject):
             self.model.sshoptions.port) if has_ssh_config and self.model.sshoptions.port is not None else ''
         self.remote_user = self.model.sshoptions.user if has_ssh_config and self.model.sshoptions.user is not None else ''
 
-        default_rsync_options = yarg.application.instance('yarg.conf').get_default_rsync_options()
+        default_rsync_options = self._application.get_default_rsync_options()
         rsync_options = []
         for key, value in default_rsync_options.items():
             default = default_rsync_options[key]
@@ -202,7 +203,11 @@ class ProfileViewModel(QObject):
             return False
 
     def save_changes(self):
-        self.model.name = self._name
+        if self.model.name != self._name:
+            profiles = self._application.get_profiles()
+            profiles.pop(self.model.name, None)
+            self.model.name = self._name
+            profiles[self.model.name] = self.model
         self.model.source.path.clear()
         for path in self._source_paths:
             self.model.source.path.append(path.text)
@@ -221,7 +226,7 @@ class ProfileViewModel(QObject):
             self.model.sshoptions.port = self._remote_port
             self.model.sshoptions.user = self._remote_user
             self.model.sshoptions.identity_file = self._remote_identity_file
-        default_rsync_options = yarg.application.instance('yarg.conf').get_default_rsync_options()
+        default_rsync_options = self._application.get_default_rsync_options()
         for option in self._rsync_options:
             default = default_rsync_options[option.key]
             new_value = option.value

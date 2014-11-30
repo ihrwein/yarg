@@ -93,10 +93,10 @@ ColumnLayout {
                         text: object.sync_in_progress ? 'Abort' : 'Delete'
                         onClicked: {
                             if(object.sync_in_progress) {
+                                mainController.abort_sync_clicked(object.name)
+                            } else {
                                 updateSelection()
                                 mainController.delete_profile_clicked()
-                            } else {
-                                mainController.abort_sync_clicked(object.name)
                             }
                         }
                     }
