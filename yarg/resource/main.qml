@@ -21,6 +21,5 @@ ApplicationWindow {
         id: mainComponent
         ProfileList {id: profileList}
         EditPanel {id: editPanel}
-        AddProfilePanel {id: addProfilePanel}
     }
 }

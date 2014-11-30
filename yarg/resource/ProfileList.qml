@@ -7,8 +7,10 @@ ColumnLayout {
     RowLayout {
         spacing: 0
         Layout.fillWidth: true
+        Layout.minimumHeight: 40
         Button {
             Layout.fillWidth: true
+            Layout.minimumHeight: 40
             text: "Add new profile"
             onClicked: {
                 mainController.add_new_profile_clicked()
@@ -31,7 +33,8 @@ ColumnLayout {
         delegate: Rectangle {
             id: wrapperRect
             border.color: object.out_of_sync ? 'red' : 'black'
-            color: ListView.isCurrentItem ? 'lightGray' : 'white'
+            height: content.height + 20
+            border.width: ListView.isCurrentItem ? 2 : 1
             ListView.onAdd: SequentialAnimation {
                 NumberAnimation { target: wrapperRect; property: "scale"; from: 0; to: 1; duration: 250; easing.type: Easing.InOutQuad }
             }
@@ -48,32 +51,39 @@ ColumnLayout {
                 right: parent.right
                 margins: 5
             }
-            height: content.height + 15
-            border.width: 1
-            RowLayout {
+            ColumnLayout {
                 id: content
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                     right: parent.right
-                    margins: 5
+                    margins: 10
                 }
                 ColumnLayout {
                     Text {
+                        Layout.fillWidth: true
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pointSize: 10
                         text: object.name
                     }
-                    Text {
-                        text: object.last_sync
-                    }
-                    Text {
-                        visible: object.sync_in_progress
-                        text: 'synchronizing'
+                    RowLayout {
+                        Layout.fillWidth:true
+                        Text {
+                            Layout.fillWidth:true
+                            text: 'Last sync: ' + (object.last_sync != '' ? object.last_sync : 'Never')
+                        }
+                        Text {
+                            Layout.fillWidth:true
+                            visible: object.sync_in_progress
+                            text: 'Synchronizing...'
+                        }
                     }
                 }
                 RowLayout {
-                    anchors.right: parent.right
+                    visible: index == profileList.currentIndex
+                    Layout.fillWidth: true
                     Button {
-                        style: ButtonStyle {}
+                        Layout.fillWidth: true
                         text: "Sync"
                         onClicked: {
                             updateSelection()
@@ -81,7 +91,7 @@ ColumnLayout {
                         }
                     }
                     Button {
-                        style: ButtonStyle {}
+                        Layout.fillWidth: true
                         text: "Edit"
                         onClicked: {
                             updateSelection()
@@ -89,7 +99,7 @@ ColumnLayout {
                         }
                     }
                     Button {
-                        style: ButtonStyle {}
+                        Layout.fillWidth: true
                         text: object.sync_in_progress ? 'Abort' : 'Delete'
                         onClicked: {
                             if(object.sync_in_progress) {

@@ -17,7 +17,8 @@ def main():
     main_controller.profile_selection_changed(0)
     engine.rootContext().setContextProperty('mainController', main_controller)
     engine.load(QUrl.fromLocalFile('../yarg/resource/main.qml'))
-    window = engine.rootObjects()[0]
+    # window = engine.rootObjects()[0]
+    # window.show()
     sys.exit(app.exec_())
 
 

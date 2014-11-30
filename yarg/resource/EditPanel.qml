@@ -10,9 +10,13 @@ ColumnLayout {
     RowLayout {
         spacing: 0
         width: parent.width
+        Layout.fillWidth: true
+        Layout.minimumHeight: 40
         Button {
+            Layout.minimumHeight: 40
             Layout.maximumWidth: parent.width / 2
             Layout.fillWidth: true
+            style: ButtonStyle {}
             text: "Save & Close"
             onClicked: {
                 stackView.pop();
@@ -20,6 +24,7 @@ ColumnLayout {
             }
         }
         Button {
+            Layout.minimumHeight: 40
             Layout.maximumWidth: parent.width / 2
             Layout.fillWidth: true
             text: "Close"
