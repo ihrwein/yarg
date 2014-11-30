@@ -74,10 +74,18 @@ ColumnLayout {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             property variant model: object
-                            sourceComponent: object.option_type == 'bool' ? bool_option_model : object.option_type == 'str' ? string_option_model : int_option_model
+                            sourceComponent: selectOptionType(object)
                         }
                     }
                 }
+            }
+            function selectOptionType(object) {
+                if(object.option_type == 'bool')
+                    return bool_option_model
+                else if(object.option_type == 'str')
+                    return string_option_model
+                else
+                    return int_option_model
             }
         }
     }
