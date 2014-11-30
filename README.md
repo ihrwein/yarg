@@ -4,11 +4,10 @@
 
 ### Linux
 
-You have to install the following dependencies on Ubuntu 14.04:
+You can install the dependencies with the following command on Ubuntu 14.04:
 ```
-python3-pyqt5.qtquick
-python3-pyqt5
-libglu1-mesa-dev
+apt-get install qtdeclarative5-quicklayouts-plugin qtdeclarative5-controls-plugin python3 python3-pyqt5 python3-pyqt5.qtquick python3-setuptools
+easy_install3 PyYAML
 ```
 
 Then, you can install YARG:
@@ -18,7 +17,7 @@ python3 setup.py install --user
 
 ## Configuration
 
-A simple config file:
+A sample config file:
 
 ```yaml
 default_rsync_options:
@@ -54,7 +53,6 @@ profiles:
        force: true
        chmod: "600"
        rsh: ssh
-     ssh_remote: destination
      ssh:
        port: 10022
        identity_file: ~/.ssh/id_rsa
