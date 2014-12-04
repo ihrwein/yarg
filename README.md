@@ -33,7 +33,10 @@ You have to copy a configuration file into your HOME directory (from the clones 
 ```
 cp tests/yarg.conf ~/.yarg.conf
 ```
-Now, you are ready to use YARG!
+Now, you are ready to use YARG:
+```
+$ yarg
+```
 ## Useful stuffs
 ### distutils with resource files
 
