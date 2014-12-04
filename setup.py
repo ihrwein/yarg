@@ -7,7 +7,7 @@ setup(
     scripts=['runner.py'],
     packages = find_packages(),
     #packages=['yarg'],
-    #package_data={'yarg': ['resource/*']},
+    package_data={'yarg': ['resource/*']},
     data_files=[('resource', ['yarg/resource/main.qml'])],
     entry_points={
         'gui_scripts': [
